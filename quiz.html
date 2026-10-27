@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Hub - Biology Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #176b3a;
+        }
+
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #f8f8f8;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background: #e8f5e9;
+        }
+
+        .option.correct {
+            background: #b7e4c7;
+        }
+
+        .option.wrong {
+            background: #ffb3b3;
+        }
+
+        #nextBtn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #176b3a;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        #nextBtn:hover {
+            background: #0f4d29;
+        }
+
+        #result {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #progress {
+            text-align: center;
+            color: #555;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <h1>🧬 Biology Quiz</h1>
+
+    <div id="progress"></div>
+
+    <div id="quiz">
+        <div class="question" id="question"></div>
+
+        <div id="options"></div>
+
+        <button id="nextBtn" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+const questions = [
+
+    {
+        question: "Which organelle is known as the powerhouse of the cell?",
+        options: [
+            "A. Nucleus",
+            "B. Mitochondrion",
+            "C. Ribosome",
+            "D. Golgi apparatus"
+        ],
+        answer: 1
+    },
+
+    {
+        question: "Which process involves the movement of water molecules through a partially permeable membrane?",
+        options: [
+            "A. Diffusion",
+            "B. Active transport",
+            "C. Osmosis",
+            "D. Transpiration"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "What is the main function of red blood cells?",
+        options: [
+            "A. Fighting diseases",
+            "B. Carrying oxygen",
+            "C. Producing hormones",
+            "D. Digesting food"
+        ],
+        answer: 1
+    },
+
+    {
+        question: "Which gas is released during photosynthesis?",
+        options: [
+            "A. Carbon dioxide",
+            "B. Nitrogen",
+            "C. Oxygen",
+            "D. Hydrogen"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "Which part of the flower produces pollen grains?",
+        options: [
+            "A. Stigma",
+            "B. Ovary",
+            "C. Anther",
+            "D. Sepal"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "What is the basic unit of life?",
+        options: [
+            "A. Tissue",
+            "B. Organ",
+            "C. Cell",
+            "D. System"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "Which substance is needed by plants for photosynthesis?",
+        options: [
+            "A. Carbon dioxide",
+            "B. Urea",
+            "C. Protein",
+            "D. Fat"
+        ],
+        answer: 0
+    },
+
+    {
+        question: "Which organ is mainly responsible for pumping blood around the body?",
+        options: [
+            "A. Kidney",
+            "B. Heart",
+            "C. Liver",
+            "D. Lung"
+        ],
+        answer: 1
+    },
+
+    {
+        question: "What is the loss of water vapour from the leaves of a plant called?",
+        options: [
+            "A. Respiration",
+            "B. Transpiration",
+            "C. Photosynthesis",
+            "D. Germination"
+        ],
+        answer: 1
+    },
+
+    {
+        question: "Which blood cells help the body fight infections?",
+        options: [
+            "A. Red blood cells",
+            "B. Platelets",
+            "C. White blood cells",
+            "D. Plasma cells"
+        ],
+        answer: 2
+    }
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("question").textContent =
+        q.question;
+
+    document.getElementById("progress").textContent =
+        "Question " + (currentQuestion + 1) +
+        " of " + questions.length;
+
+    const optionsDiv = document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+    q.options.forEach((option, index) => {
+
+        const button = document.createElement("button");
+
+        button.textContent = option;
+        button.className = "option";
+
+        button.onclick = function() {
+            checkAnswer(index, button);
+        };
+
+        optionsDiv.appendChild(button);
+
+    });
+
+    document.getElementById("nextBtn").style.display = "block";
+}
+
+
+function checkAnswer(selected, button) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const correct = questions[currentQuestion].answer;
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+    if (selected === correct) {
+
+        button.classList.add("correct");
+
+        score++;
+
+    } else {
+
+        button.classList.add("wrong");
+
+        buttons[correct].classList.add("correct");
+
+    }
+
+}
+
+
+function nextQuestion() {
+
+    if (!answered) {
+
+        alert("Please choose an answer first.");
+
+        return;
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+
+        loadQuestion();
+
+    } else {
+
+        showResult();
+
+    }
+
+}
+
+
+function showResult() {
+
+    document.getElementById("quiz").style.display = "none";
+
+    document.getElementById("progress").style.display = "none";
+
+    document.getElementById("result").innerHTML =
+        "🎉 Quiz Completed!<br><br>" +
+        "Your Score: " + score +
+        " / " + questions.length +
+        "<br><br>" +
+        getMessage();
+
+}
+
+
+function getMessage() {
+
+    const percentage =
+        (score / questions.length) * 100;
+
+    if (percentage >= 80) {
+
+        return "Excellent work! 🌟";
+
+    } else if (percentage >= 60) {
+
+        return "Good work! Keep studying. 👍";
+
+    } else if (percentage >= 40) {
+
+        return "Not bad. Keep practising! 📚";
+
+    } else {
+
+        return "Keep learning and try again! 💪";
+
+    }
+
+}
+
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,966 @@
+Yes 👍 If you want one all subject.html page containing quizzes for all the SHS subjects, use this.
+In Acode: create a new file named exactly all subject.html, then paste everything below.
+Writing
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Hub - All Subjects Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #176b3a;
+        }
+
+        .subject-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .subject-buttons button {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .subject-buttons button:hover {
+            background: #e8f5e9;
+        }
+
+        .quiz-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        #subjectTitle {
+            text-align: center;
+            color: #176b3a;
+        }
+
+        #progress {
+            text-align: center;
+            color: #555;
+        }
+
+        #question {
+            font-size: 19px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .option {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #f8f8f8;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background: #e8f5e9;
+        }
+
+        .correct {
+            background: #b7e4c7 !important;
+        }
+
+        .wrong {
+            background: #ffb3b3 !important;
+        }
+
+        #nextBtn,
+        #restartBtn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #176b3a;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        #restartBtn {
+            background: #444;
+        }
+
+        #result {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📚 STUDY HUB</h1>
+
+    <h2 style="text-align:center;">SHS Quiz Centre</h2>
+
+    <!-- SUBJECTS -->
+    <div class="subject-buttons">
+
+        <button onclick="startQuiz('Biology')">🧬 Biology</button>
+
+        <button onclick="startQuiz('Chemistry')">⚗️ Chemistry</button>
+
+        <button onclick="startQuiz('Physics')">⚡ Physics</button>
+
+        <button onclick="startQuiz('Mathematics')">📐 Mathematics</button>
+
+        <button onclick="startQuiz('English')">📖 English</button>
+
+        <button onclick="startQuiz('ICT')">💻 ICT / Computer Science</button>
+
+        <button onclick="startQuiz('Geography')">🌍 Geography</button>
+
+        <button onclick="startQuiz('Government')">🏛️ Government</button>
+
+        <button onclick="startQuiz('Economics')">💰 Economics</button>
+
+        <button onclick="startQuiz('Integrated Science')">
+            🔬 Integrated Science
+        </button>
+
+    </div>
+
+
+    <!-- QUIZ -->
+    <div id="quizBox" class="quiz-box hidden">
+
+        <h2 id="subjectTitle"></h2>
+
+        <div id="progress"></div>
+
+        <div id="question"></div>
+
+        <div id="options"></div>
+
+        <button id="nextBtn" onclick="nextQuestion()">
+            Next Question
+        </button>
+
+        <div id="result"></div>
+
+        <button id="restartBtn" onclick="location.reload()">
+            Choose Another Subject
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const quizzes = {
+
+    Biology: [
+
+        {
+            q: "Which organelle is known as the powerhouse of the cell?",
+            options: [
+                "A. Nucleus",
+                "B. Mitochondrion",
+                "C. Ribosome",
+                "D. Golgi apparatus"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which process involves the movement of water molecules through a partially permeable membrane?",
+            options: [
+                "A. Diffusion",
+                "B. Active transport",
+                "C. Osmosis",
+                "D. Respiration"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "Which blood cells help the body fight infections?",
+            options: [
+                "A. Red blood cells",
+                "B. White blood cells",
+                "C. Platelets",
+                "D. Plasma"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "What is the loss of water vapour from leaves called?",
+            options: [
+                "A. Respiration",
+                "B. Transpiration",
+                "C. Germination",
+                "D. Digestion"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which gas is released during photosynthesis?",
+            options: [
+                "A. Carbon dioxide",
+                "B. Nitrogen",
+                "C. Oxygen",
+                "D. Hydrogen"
+            ],
+            answer: 2
+        }
+
+    ],
+
+
+    Chemistry: [
+
+        {
+            q: "What is the chemical symbol for sodium?",
+            options: [
+                "A. S",
+                "B. So",
+                "C. Na",
+                "D. N"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "Which gas is produced when an acid reacts with a carbonate?",
+            options: [
+                "A. Oxygen",
+                "B. Hydrogen",
+                "C. Carbon dioxide",
+                "D. Nitrogen"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "A substance with a pH of 7 is described as what?",
+            options: [
+                "A. Acidic",
+                "B. Neutral",
+                "C. Alkaline",
+                "D. Corrosive"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "What is the smallest particle of an element that retains its chemical properties?",
+            options: [
+                "A. Atom",
+                "B. Cell",
+                "C. Molecule",
+                "D. Ion"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "Which type of reaction involves the removal of oxygen from a substance?",
+            options: [
+                "A. Oxidation",
+                "B. Reduction",
+                "C. Neutralisation",
+                "D. Combustion"
+            ],
+            answer: 1
+        }
+
+    ],
+
+
+    Physics: [
+
+        {
+            q: "What is the SI unit of force?",
+            options: [
+                "A. Joule",
+                "B. Watt",
+                "C. Newton",
+                "D. Pascal"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "What is the SI unit of electric potential difference?",
+            options: [
+                "A. Ampere",
+                "B. Volt",
+                "C. Ohm",
+                "D. Coulomb"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which quantity is measured in joules?",
+            options: [
+                "A. Energy",
+                "B. Current",
+                "C. Resistance",
+                "D. Charge"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "What force pulls objects towards the Earth?",
+            options: [
+                "A. Friction",
+                "B. Tension",
+                "C. Gravity",
+                "D. Upthrust"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "Which device is used to measure electric current?",
+            options: [
+                "A. Voltmeter",
+                "B. Ammeter",
+                "C. Thermometer",
+                "D. Barometer"
+            ],
+            answer: 1
+        }
+
+    ],
+
+
+    Mathematics: [
+
+        {
+            q: "Solve: 2x + 5 = 17.",
+            options: [
+                "A. 5",
+                "B. 6",
+                "C. 7",
+                "D. 8"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "What is the square root of 144?",
+            options: [
+                "A. 10",
+                "B. 11",
+                "C. 12",
+                "D. 14"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "What is 25% of 200?",
+            options: [
+                "A. 25",
+                "B. 40",
+                "C. 50",
+                "D. 75"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "What is the gradient of a horizontal line?",
+            options: [
+                "A. 0",
+                "B. 1",
+                "C. -1",
+                "D. Undefined"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "What is the value of 3² + 4²?",
+            options: [
+                "A. 12",
+                "B. 20",
+                "C. 25",
+                "D. 49"
+            ],
+            answer: 2
+        }
+
+    ],
+
+
+    English: [
+
+        {
+            q: "Which part of speech is the word 'quickly'?",
+            options: [
+                "A. Noun",
+                "B. Adjective",
+                "C. Adverb",
+                "D. Preposition"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "Choose the correct sentence.",
+            options: [
+                "A. She go to school.",
+                "B. She goes to school.",
+                "C. She going school.",
+                "D. She gone school."
+            ],
+            answer: 1
+        },
+
+        {
+            q: "What is the opposite of 'ancient'?",
+            options: [
+                "A. Old",
+                "B. Modern",
+                "C. Past",
+                "D. Historic"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which word is a synonym for 'happy'?",
+            options: [
+                "A. Sad",
+                "B. Angry",
+                "C. Joyful",
+                "D. Tired"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "A sentence that asks a question is called what?",
+            options: [
+                "A. Declarative",
+                "B. Imperative",
+                "C. Interrogative",
+                "D. Exclamatory"
+            ],
+            answer: 2
+        }
+
+    ],
+
+
+    ICT: [
+
+        {
+            q: "Which programming language is widely used in data science and machine learning?",
+            options: [
+                "A. HTML",
+                "B. CSS",
+                "C. Python",
+                "D. SQL"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "What does CPU stand for?",
+            options: [
+                "A. Central Processing Unit",
+                "B. Computer Personal Unit",
+                "C. Central Program Utility",
+                "D. Computer Processing User"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "Which of these is an input device?",
+            options: [
+                "A. Monitor",
+                "B. Printer",
+                "C. Keyboard",
+                "D. Speaker"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "What does HTML mainly provide for a webpage?",
+            options: [
+                "A. Structure",
+                "B. Electricity",
+                "C. Internet connection",
+                "D. Antivirus protection"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "Which device is mainly used to display visual output?",
+            options: [
+                "A. Keyboard",
+                "B. Monitor",
+                "C. Mouse",
+                "D. Microphone"
+            ],
+            answer: 1
+        }
+
+    ],
+
+
+    Geography: [
+
+        {
+            q: "Which layer of the Earth lies directly beneath the crust?",
+            options: [
+                "A. Inner core",
+                "B. Outer core",
+                "C. Mantle",
+                "D. Atmosphere"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "Which instrument measures atmospheric pressure?",
+            options: [
+                "A. Thermometer",
+                "B. Barometer",
+                "C. Rain gauge",
+                "D. Anemometer"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which is the longest river in Ghana?",
+            options: [
+                "A. Volta River",
+                "B. Pra River",
+                "C. Ankobra River",
+                "D. Tano River"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "What is the process by which rocks are broken down at the Earth's surface?",
+            options: [
+                "A. Weathering",
+                "B. Condensation",
+                "C. Evaporation",
+                "D. Deposition"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "Which imaginary line divides the Earth into Northern and Southern Hemispheres?",
+            options: [
+                "A. Prime Meridian",
+                "B. Equator",
+                "C. Tropic of Cancer",
+                "D. Arctic Circle"
+            ],
+            answer: 1
+        }
+
+    ],
+
+
+    Government: [
+
+        {
+            q: "What is the supreme law of a country called?",
+            options: [
+                "A. Constitution",
+                "B. Manifesto",
+                "C. Decree",
+                "D. Policy"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "Which arm of government makes laws?",
+            options: [
+                "A. Executive",
+                "B. Legislature",
+                "C. Judiciary",
+                "D. Civil service"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Democracy is mainly based on what?",
+            options: [
+                "A. Rule by one person",
+                "B. Participation of the people",
+                "C. Military control",
+                "D. Hereditary rule"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which arm of government interprets laws?",
+            options: [
+                "A. Legislature",
+                "B. Executive",
+                "C. Judiciary",
+                "D. Cabinet"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "What is the right to vote in an election called?",
+            options: [
+                "A. Franchise",
+                "B. Citizenship",
+                "C. Sovereignty",
+                "D. Authority"
+            ],
+            answer: 0
+        }
+
+    ],
+
+
+    Economics: [
+
+        {
+            q: "What is the basic economic problem?",
+            options: [
+                "A. Unlimited resources",
+                "B. Scarcity",
+                "C. High population",
+                "D. Free goods"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which factor of production refers to human effort?",
+            options: [
+                "A. Land",
+                "B. Labour",
+                "C. Capital",
+                "D. Enterprise"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "What happens to demand when price normally rises, all other things being equal?",
+            options: [
+                "A. Demand rises",
+                "B. Demand falls",
+                "C. Demand stays unlimited",
+                "D. Supply becomes zero"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which factor of production includes natural resources?",
+            options: [
+                "A. Labour",
+                "B. Capital",
+                "C. Land",
+                "D. Enterprise"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "Money used to buy goods and services is performing which function?",
+            options: [
+                "A. Medium of exchange",
+                "B. Production",
+                "C. Division of labour",
+                "D. Scarcity"
+            ],
+            answer: 0
+        }
+
+    ],
+
+
+    "Integrated Science": [
+
+        {
+            q: "Which organ is responsible for pumping blood around the body?",
+            options: [
+                "A. Kidney",
+                "B. Heart",
+                "C. Liver",
+                "D. Lung"
+            ],
+            answer: 1
+        },
+
+        {
+            q: "Which form of energy is stored in food?",
+            options: [
+                "A. Chemical energy",
+                "B. Sound energy",
+                "C. Light energy",
+                "D. Nuclear energy"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "What is the boiling point of water at standard atmospheric pressure?",
+            options: [
+                "A. 0°C",
+                "B. 50°C",
+                "C. 100°C",
+                "D. 150°C"
+            ],
+            answer: 2
+        },
+
+        {
+            q: "Which gas is essential for human respiration?",
+            options: [
+                "A. Oxygen",
+                "B. Nitrogen",
+                "C. Carbon dioxide",
+                "D. Hydrogen"
+            ],
+            answer: 0
+        },
+
+        {
+            q: "Which instrument is used to measure temperature?",
+            options: [
+                "A. Barometer",
+                "B. Thermometer",
+                "C. Ammeter",
+                "D. Voltmeter"
+            ],
+            answer: 1
+        }
+
+    ]
+
+};
+
+
+let currentSubject = "";
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+
+function startQuiz(subject) {
+
+    currentSubject = subject;
+    currentQuestion = 0;
+    score = 0;
+
+    document.querySelector(".subject-buttons").style.display = "none";
+
+    document.getElementById("quizBox").classList.remove("hidden");
+
+    document.getElementById("subjectTitle").textContent =
+        subject + " Quiz";
+
+    document.getElementById("restartBtn").style.display = "none";
+
+    loadQuestion();
+}
+
+
+function loadQuestion() {
+
+    answered = false;
+
+    const quiz = quizzes[currentSubject];
+
+    const q = quiz[currentQuestion];
+
+    document.getElementById("progress").textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        quiz.length;
+
+    document.getElementById("question").textContent =
+        q.q;
+
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+    q.options.forEach((option, index) => {
+
+        const button =
+            document.createElement("button");
+
+        button.textContent = option;
+
+        button.className = "option";
+
+        button.onclick = function() {
+            checkAnswer(index, button);
+        };
+
+        optionsDiv.appendChild(button);
+
+    });
+
+    document.getElementById("nextBtn").style.display =
+        "block";
+
+    document.getElementById("result").innerHTML = "";
+}
+
+
+function checkAnswer(selected, button) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const correct =
+        quizzes[currentSubject][currentQuestion].answer;
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+    if (selected === correct) {
+
+        button.classList.add("correct");
+
+        score++;
+
+    } else {
+
+        button.classList.add("wrong");
+
+        buttons[correct].classList.add("correct");
+
+    }
+
+}
+
+
+function nextQuestion() {
+
+    if (!answered) {
+
+        alert("Please choose an answer first.");
+
+        return;
+
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion <
+        quizzes[currentSubject].length) {
+
+        loadQuestion();
+
+    } else {
+
+        showResult();
+
+    }
+
+}
+
+
+function showResult() {
+
+    document.getElementById("question").innerHTML = "";
+
+    document.getElementById("options").innerHTML = "";
+
+    document.getElementById("progress").innerHTML = "";
+
+    document.getElementById("nextBtn").style.display =
+        "none";
+
+    document.getElementById("result").innerHTML =
+        "🎉 Quiz Completed!<br><br>" +
+        "Score: " +
+        score +
+        " / " +
+        quizzes[currentSubject].length;
+
+    document.getElementById("restartBtn").style.display =
+        "block";
+
+}
+
+</script>
+
+</body>
+</html>
+Did you like this feature?
+What this page does
+It gives your website 10 subject buttons:
+🧬 Biology
+⚗️ Chemistry
+⚡ Physics
+📐 Mathematics
+📖 English
+💻 ICT / Computer Science
+🌍 Geography
+🏛️ Government
+💰 Economics
+🔬 Integrated Science
+Each subject has 5 questions, automatic marking, and a final score.
+Important: If your main page has a button called “All Subjects”, make its link point to:
+HTML
+<a href="all subject.html">All Subjects</a>
+Then tapping All Subjects on your Study Hub will open this quiz page.
